@@ -16,146 +16,146 @@ type Collection @entity {
 }
 
 
-type ApprovalForAll @entity(immutable: true) {
-  id: Bytes!
-  account: Bytes! # address
-  owner: Bytes! # address
-  operator: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type ApprovalForAll @entity(immutable: true) {
+#   id: Bytes!
+#   account: Bytes! # address
+#   owner: Bytes! # address
+#   operator: Bytes! # address
+#   approved: Boolean! # bool
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type Initialized @entity(immutable: true) {
-  id: Bytes!
-  version: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type Initialized @entity(immutable: true) {
+#   id: Bytes!
+#   version: Int! # uint8
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type TransferBatch @entity(immutable: true) {
-  id: Bytes!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  ids: [BigInt!]! # uint256[]
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type TransferBatch @entity(immutable: true) {
+#   id: Bytes!
+#   operator: Bytes! # address
+#   from: Bytes! # address
+#   to: Bytes! # address
+#   ids: [BigInt!]! # uint256[]
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type TransferBatch1 @entity(immutable: true) {
-  id: Bytes!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  ids: [BigInt!]! # uint256[]
-  values: [BigInt!]! # uint256[]
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type TransferBatch1 @entity(immutable: true) {
+#   id: Bytes!
+#   operator: Bytes! # address
+#   from: Bytes! # address
+#   to: Bytes! # address
+#   ids: [BigInt!]! # uint256[]
+#   values: [BigInt!]! # uint256[]
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type TransferSingle @entity(immutable: true) {
-  id: Bytes!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  NftMinter_id: BigInt! # uint256
-  value: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type TransferSingle @entity(immutable: true) {
+#   id: Bytes!
+#   operator: Bytes! # address
+#   from: Bytes! # address
+#   to: Bytes! # address
+#   NftMinter_id: BigInt! # uint256
+#   value: BigInt! # uint256
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type URI @entity(immutable: true) {
-  id: Bytes!
-  value: String! # string
-  NftMinter_id: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-type AdminChanged @entity(immutable: true) {
-  id: Bytes!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type URI @entity(immutable: true) {
+#   id: Bytes!
+#   value: String! # string
+#   NftMinter_id: BigInt! # uint256
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
+# type AdminChanged @entity(immutable: true) {
+#   id: Bytes!
+#   previousAdmin: Bytes! # address
+#   newAdmin: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type BeaconUpgraded @entity(immutable: true) {
-  id: Bytes!
-  beacon: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type BeaconUpgraded @entity(immutable: true) {
+#   id: Bytes!
+#   beacon: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type CollectionCreated @entity(immutable: true) {
-  id: Bytes!
-  collectionAddress: Bytes! # address
-  collectionOwner: Bytes! # address
-  collectionName: String! # string
-  collectiondescription: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type CollectionCreated @entity(immutable: true) {
+#   id: Bytes!
+#   collectionAddress: Bytes! # address
+#   collectionOwner: Bytes! # address
+#   collectionName: String! # string
+#   collectiondescription: String! # string
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type Upgraded @entity(immutable: true) {
-  id: Bytes!
-  implementation: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type Upgraded @entity(immutable: true) {
+#   id: Bytes!
+#   implementation: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type Approval @entity(immutable: true) {
-  id: Bytes!
-  owner: Bytes! # address
-  approved: Bytes! # address
-  tokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-  operator: Bytes! # address
-}
+# type Approval @entity(immutable: true) {
+#   id: Bytes!
+#   owner: Bytes! # address
+#   approved: Bytes! # address
+#   tokenId: BigInt! # uint256
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+#   operator: Bytes! # address
+# }
 
-type Transfer @entity(immutable: true) {
-  id: Bytes!
-  from: Bytes! # address
-  to: Bytes! # address
-  tokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type Transfer @entity(immutable: true) {
+#   id: Bytes!
+#   from: Bytes! # address
+#   to: Bytes! # address
+#   tokenId: BigInt! # uint256
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type NftMarketAdminChanged @entity(immutable: true) {
-  id: Bytes!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type NftMarketAdminChanged @entity(immutable: true) {
+#   id: Bytes!
+#   previousAdmin: Bytes! # address
+#   newAdmin: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type NftMarketBeaconUpgraded @entity(immutable: true) {
-  id: Bytes!
-  beacon: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type NftMarketBeaconUpgraded @entity(immutable: true) {
+#   id: Bytes!
+#   beacon: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }
 
-type NftMarketUpgraded @entity(immutable: true) {
-  id: Bytes!
-  implementation: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# type NftMarketUpgraded @entity(immutable: true) {
+#   id: Bytes!
+#   implementation: Bytes! # address
+#   blockNumber: BigInt!
+#   blockTimestamp: BigInt!
+#   transactionHash: Bytes!
+# }

@@ -14,12 +14,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - ApprovalForAll
-        - Initialized
-        - TransferBatch
-        - TransferBatch1
-        - TransferSingle
-        - URI
+        - Collection
       abis:
         - name: NftMinter
           file: ./abis/NftMinter.json
@@ -28,14 +23,15 @@ dataSources:
           handler: handleApprovalForAll
         - event: Initialized(uint8)
           handler: handleInitialized
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[])
-          handler: handleTransferBatch
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
           handler: handleTransferBatch1
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
         - event: URI(string,indexed uint256)
           handler: handleURI
+
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[])
+          handler: handleTransferBatch
       file: ./src/nft-minter.ts
   - kind: ethereum
     name: NftCollection
@@ -54,6 +50,15 @@ dataSources:
         - name: NftCollection
           file: ./abis/NftCollection.json
       eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+
         - event: CollectionCreated(indexed address,indexed address,string,string)
           handler: handleCollectionCreated
       file: ./src/nft-collection.ts
@@ -69,9 +74,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - ApprovalForAll
-        - Transfer
+        - Collection
       abis:
         - name: SoulBound
           file: ./abis/SoulBound.json
@@ -95,19 +98,32 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - BeaconUpgraded
-        - Upgraded
+        - Collection
       abis:
         - name: SingleNftMinter
           file: ./abis/SingleNftMinter.json
       eventHandlers:
         - event: AdminChanged(address,address)
           handler: handleAdminChanged
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
         - event: BeaconUpgraded(indexed address)
           handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch1
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+
+        - event: CollectionInit(address,indexed address,string)
+          handler: handleCollectionInit
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[])
+          handler: handleTransferBatch
       file: ./src/single-nft-minter.ts
   - kind: ethereum
     name: NftMarket
@@ -121,9 +137,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - NftMarketAdminChanged
-        - NftMarketBeaconUpgraded
-        - NftMarketUpgraded
+        - Collection
       abis:
         - name: NftMarket
           file: ./abis/NftMarket.json
@@ -134,4 +148,15 @@ dataSources:
           handler: handleBeaconUpgraded
         - event: Upgraded(indexed address)
           handler: handleUpgraded
+
+        - event: BulkMarketItemCreated(indexed address,indexed address,string,uint256,uint256[],address,uint256,string)
+          handler: handleBulkMarketItemCreated
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: MarketItemCreated(indexed address,indexed address,string,uint256,uint256,address,uint256)
+          handler: handleMarketItemCreated
+        - event: MarketItemSold(indexed address,indexed address,uint256,uint256)
+          handler: handleMarketItemSold
+        - event: RecievedRoyalties(indexed address,indexed address,indexed uint256)
+          handler: handleRecievedRoyalties
       file: ./src/nft-market.ts
