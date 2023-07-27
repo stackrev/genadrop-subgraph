@@ -1,62 +1,20 @@
-import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  NftCollection,
-  AdminChanged,
-  BeaconUpgraded,
-  CollectionCreated,
-  Initialized,
-  Upgraded
+  CollectionCreated as CollectionCreatedEvent,
 } from "../generated/NftCollection/NftCollection"
-import { ExampleEntity } from "../generated/schema"
+import { Collection } from "../generated/schema"
 
-export function handleAdminChanged(event: AdminChanged): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from)
+export function handleCollectionCreated(event: CollectionCreatedEvent): void {
+  let entity = new Collection(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.collectionAddress = event.params.collectionAddress
+  entity.creator = event.params.collectionOwner
+  entity.name = event.params.collectionName
+  entity.description = event.params.collectiondescription
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from)
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.previousAdmin = event.params.previousAdmin
-  entity.newAdmin = event.params.newAdmin
-
-  // Entities can be written to the store with `.save()`
   entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.TokenImplementation(...)
-  // - contract.collectionsOf(...)
-  // - contract.proxiableUUID(...)
 }
-
-export function handleBeaconUpgraded(event: BeaconUpgraded): void {}
-
-export function handleCollectionCreated(event: CollectionCreated): void {}
-
-export function handleInitialized(event: Initialized): void {}
-
-export function handleUpgraded(event: Upgraded): void {}

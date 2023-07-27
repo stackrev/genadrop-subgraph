@@ -1,8 +1,24 @@
 {
   "fuji": {
+    "NftMinter": {
+      "address": "0x2125AaDAb7e9A01e9e9EaafbF30360485550cC39",
+      "startBlock": 24529539
+    },
     "NftCollection": {
       "address": "0x1Df30C1DD57bEd3689064Cdb0eF363155bbbb6AC",
       "startBlock": 24529544
+    },
+    "SoulBound": {
+      "address": "0x90a23D02152fB58a19b1d9604B592aD331Fd3FDB",
+      "startBlock": 24528629
+    },
+    "SingleNftMinter": {
+      "address": "0xA0475AE9c24443f4f9FDC7c3e32cCD2A6EFF8E1a",
+      "startBlock": 24529513
+    },
+    "NftMarket": {
+      "address": "0xed774B08a23e43Af9f4cDE5c1D431EA3DB1276e7",
+      "startBlock": 24517666
     }
   }
 }
