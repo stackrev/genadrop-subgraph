@@ -1,18 +1,25 @@
 type Nft @entity {
   id: Bytes!
   tokenId: BigInt!
-
+  price: BigInt!
+  tokenIPFSPath: String!
+  createdAtTimeStamp: BigInt!
+  isSold: Boolean!
+  isListed: Boolean!
+  isSoulBound: Boolean!
+  owner: Bytes!
+  collection: Bytes!
+  category: String!
+  chain: BigInt!
+  transactions: Bytes!
 }
 
 type Collection @entity {
   id: Bytes!
-  collectionAddress: Bytes! # address
+  address: Bytes! # address
   creator: Bytes! # address
   name: String! # string
   description: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
 
 

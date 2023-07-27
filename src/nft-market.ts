@@ -9,7 +9,7 @@ import {
   Upgraded as UpgradedEvent
 } from "../generated/NftMarket/NftMarket"
 import {
-  Collection
+  Nft
 } from "../generated/schema"
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
@@ -59,6 +59,7 @@ export function handleUpgraded(event: UpgradedEvent): void {
 export function handleBulkMarketItemCreated(
   event: BulkMarketItemCreatedEvent
 ): void {
+
   // let entity = new BulkMarketItemCreated(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -75,7 +76,7 @@ export function handleBulkMarketItemCreated(
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
 
-  // entity.save()
+  // nft.save()
 }
 
 export function handleInitialized(event: InitializedEvent): void {
@@ -92,6 +93,15 @@ export function handleInitialized(event: InitializedEvent): void {
 }
 
 export function handleMarketItemCreated(event: MarketItemCreatedEvent): void {
+  let nft = new Nft(event.params.nftContract);
+
+  nft.id = event.params.nftContract
+  nft.category = event.params.category
+  nft.price = event.params.price
+  nft.tokenId = event.params.tokenId
+  nft.owner = event.params.owner
+  nft.chain = event.params.chain
+  nft.createdAtTimeStamp = event.block.timestamp
   // let entity = new MarketItemCreated(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -107,10 +117,15 @@ export function handleMarketItemCreated(event: MarketItemCreatedEvent): void {
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
 
-  // entity.save()
+  nft.save()
 }
 
 export function handleMarketItemSold(event: MarketItemSoldEvent): void {
+  let nft = new Nft(event.params.nftContract);
+
+  nft.id = event.params.nftContract
+  nft.price = event.params.price
+  nft.tokenId = event.params.tokenId
   // let entity = new MarketItemSold(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -123,7 +138,7 @@ export function handleMarketItemSold(event: MarketItemSoldEvent): void {
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
 
-  // entity.save()
+  nft.save()
 }
 
 export function handleRecievedRoyalties(event: RecievedRoyaltiesEvent): void {
