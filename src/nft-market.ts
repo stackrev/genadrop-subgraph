@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   AdminChanged as AdminChangedEvent,
   BeaconUpgraded as BeaconUpgradedEvent,
@@ -9,7 +10,8 @@ import {
   Upgraded as UpgradedEvent
 } from "../generated/NftMarket/NftMarket"
 import {
-  Nft
+  Collection,
+  NFT
 } from "../generated/schema"
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
@@ -53,12 +55,33 @@ export function handleUpgraded(event: UpgradedEvent): void {
 }
 
 
-// ============================================================================
+// ====================================================================================================================
 
 
 export function handleBulkMarketItemCreated(
   event: BulkMarketItemCreatedEvent
 ): void {
+
+  for(let i = 0 ; i < event.params.tokenId.length ; i ++){
+    const oneTokenId = event.params.tokenId[i]
+    let collection = Collection.load(event.params.nftContract)
+    if(!collection){
+      collection = new Collection(event.params.nftContract)
+      collection.save()
+    }
+    let nft = new NFT(event.params.nftContract.concatI32(oneTokenId.toI32()))
+    nft.collection = collection.id
+
+    // nft.seller = event.params.seller
+    nft.category = event.params.category
+    nft.price = event.params.price
+    nft.tokenId = oneTokenId
+    nft.owner = event.params.owner
+    nft.chain = event.params.chain
+    // nft.description = event.params.description
+    nft.createdAtTimeStamp = event.block.timestamp
+    nft.save();
+  }
 
   // let entity = new BulkMarketItemCreated(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -93,15 +116,24 @@ export function handleInitialized(event: InitializedEvent): void {
 }
 
 export function handleMarketItemCreated(event: MarketItemCreatedEvent): void {
-  let nft = new Nft(event.params.nftContract);
 
-  nft.id = event.params.nftContract
+  let collection = Collection.load(event.params.nftContract)
+  if(!collection){
+    collection = new Collection(event.params.nftContract)
+    collection.save()
+  }
+  let nft = new NFT(event.params.nftContract.concatI32(event.params.tokenId.toI32()))
+  nft.collection = collection.id
+
+  // nft.seller = event.params.seller
   nft.category = event.params.category
   nft.price = event.params.price
   nft.tokenId = event.params.tokenId
   nft.owner = event.params.owner
   nft.chain = event.params.chain
   nft.createdAtTimeStamp = event.block.timestamp
+  nft.save()
+
   // let entity = new MarketItemCreated(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -117,15 +149,18 @@ export function handleMarketItemCreated(event: MarketItemCreatedEvent): void {
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
 
-  nft.save()
 }
 
 export function handleMarketItemSold(event: MarketItemSoldEvent): void {
-  let nft = new Nft(event.params.nftContract);
+  let nft = NFT.load(event.params.nftContract.concatI32(event.params.tokenId.toI32()));
+  if(!nft)
+    return;
 
-  nft.id = event.params.nftContract
+  nft.isSold = true
   nft.price = event.params.price
-  nft.tokenId = event.params.tokenId
+  // nft.owner = event.params.buyer
+  nft.save()
+
   // let entity = new MarketItemSold(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -137,8 +172,6 @@ export function handleMarketItemSold(event: MarketItemSoldEvent): void {
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
-  nft.save()
 }
 
 export function handleRecievedRoyalties(event: RecievedRoyaltiesEvent): void {

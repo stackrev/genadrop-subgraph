@@ -7,7 +7,7 @@ import {
   URI as URIEvent
 } from "../generated/NftMinter/NftMinter"
 import {
-  Collection
+  NFT
 } from "../generated/schema"
 
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {
@@ -90,6 +90,12 @@ export function handleURI(event: URIEvent): void {
 //===============================================================
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
+  // event.params.ids.map((id) => {
+  //   let nft = NFT.load(id)
+  //   nft.owner = event.params.to
+  //   nft.save()
+  // })
+  
   // let entity = new TransferBatch(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )

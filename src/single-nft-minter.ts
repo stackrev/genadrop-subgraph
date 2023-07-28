@@ -140,6 +140,7 @@ export function handleCollectionInit(event: CollectionInitEvent): void {
   collection.creator = event.params.collectionOwner
   collection.name = event.params.collectionName
   collection.description = ""
+  collection.save()
 
   // let entity = new CollectionInit(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -152,7 +153,6 @@ export function handleCollectionInit(event: CollectionInitEvent): void {
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
 
-  collection.save()
 }
 
 export function handleTransferBatch(event: TransferBatchEvent): void {

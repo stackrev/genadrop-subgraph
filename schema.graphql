@@ -1,4 +1,4 @@
-type Nft @entity {
+type NFT @entity {
   id: Bytes!
   tokenId: BigInt!
   price: BigInt!
@@ -7,8 +7,8 @@ type Nft @entity {
   isSold: Boolean!
   isListed: Boolean!
   isSoulBound: Boolean!
-  owner: Bytes!
-  collection: Bytes!
+  owner: User!
+  collection: Collection!
   category: String!
   chain: BigInt!
   transactions: Bytes!
@@ -17,9 +17,16 @@ type Nft @entity {
 type Collection @entity {
   id: Bytes!
   address: Bytes! # address
-  creator: Bytes! # address
+  creator: User!
   name: String! # string
   description: String! # string
+  nfts: [NFT!]!
+}
+
+type User @entity {
+  id: Bytes!
+  address: Bytes!
+  ownedNFTs: [NFT!]!
 }
 
 

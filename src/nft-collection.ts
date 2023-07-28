@@ -81,6 +81,7 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   collection.creator = event.params.collectionOwner
   collection.name = event.params.collectionName
   collection.description = event.params.collectiondescription
+  collection.nfts = [];
 
   // collection.blockNumber = event.block.number
   // collection.blockTimestamp = event.block.timestamp
