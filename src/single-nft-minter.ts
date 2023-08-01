@@ -1,4 +1,4 @@
-import { Bytes, log } from "@graphprotocol/graph-ts";
+import { Bytes, BigInt } from "@graphprotocol/graph-ts";
 import {
   AdminChanged as AdminChangedEvent,
   ApprovalForAll as ApprovalForAllEvent,
@@ -91,10 +91,13 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
-  let nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+  let nft = NFT.load(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+  if(!nft)
+    nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
 
-  nft.tokenId = event.params.id
-  
+  nft.tokenID = event.params.id
+  nft.createdAtTimestamp = event.block.timestamp
+
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
@@ -102,10 +105,10 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   }
   nft.owner = owner.id
   
-  let userOwnedNfts = owner.ownedNFTs
-  if(!userOwnedNfts) userOwnedNfts = []
-  userOwnedNfts.push(nft.id)
-  owner.ownedNFTs = userOwnedNfts
+  let userNfts = owner.nfts
+  if(!userNfts) userNfts = []
+  userNfts.push(nft.id)
+  owner.nfts = userNfts
 
   let collection = Collection.load(Bytes.fromHexString(contractAddress))
   if(collection == null){
@@ -143,10 +146,11 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 export function handleURI(event: URIEvent): void {
   let nft = NFT.load(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
   if(!nft)
-    return;
+    nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
 
-  nft.tokenId = event.params.id
+  nft.tokenID = event.params.id
   nft.tokenIPFSPath = event.params.value
+  nft.chain = BigInt.fromU32(43113)
 
   nft.save()
   // let entity = new URI(event.transaction.hash.concatI32(event.logIndex.toI32()))

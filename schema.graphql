@@ -1,14 +1,14 @@
 type NFT @entity {
   id: Bytes!
-  tokenId: BigInt!
+  tokenID: BigInt!
   price: BigInt
   tokenIPFSPath: String
-  createdAtTimeStamp: BigInt
+  createdAtTimestamp: BigInt
   isSold: Boolean
   isListed: Boolean
   isSoulBound: Boolean
-  owner: User!
-  collection: Collection!
+  owner: User
+  collection: Collection
   category: String
   chain: BigInt
   transactions: Bytes
@@ -17,7 +17,7 @@ type NFT @entity {
 type Collection @entity {
   id: Bytes!
   address: Bytes! # address
-  creator: User!
+  creator: User
   name: String # string
   description: String # string
   nfts: [NFT!]
@@ -26,7 +26,8 @@ type Collection @entity {
 type User @entity {
   id: Bytes!
   address: Bytes!
-  ownedNFTs: [NFT!]
+  nfts: [NFT!]
+  collections: [Collection!]
 }
 
 
