@@ -75,17 +75,17 @@ export function handleUpgraded(event: UpgradedEvent): void {
 // =================================================================
 
 export function handleCollectionCreated(event: CollectionCreatedEvent): void {
-  let collection = new Collection(event.params.collectionAddress)
+  // let collection = new Collection(event.params.collectionAddress)
   
-  collection.address = event.params.collectionAddress
-  collection.creator = event.params.collectionOwner
-  collection.name = event.params.collectionName
-  collection.description = event.params.collectiondescription
-  collection.nfts = [];
+  // collection.address = event.params.collectionAddress
+  // collection.creator = event.params.collectionOwner
+  // collection.name = event.params.collectionName
+  // collection.description = event.params.collectiondescription
+  // collection.nfts = [];
 
-  // collection.blockNumber = event.block.number
-  // collection.blockTimestamp = event.block.timestamp
-  // collection.transactionHash = event.transaction.hash
+  // // collection.blockNumber = event.block.number
+  // // collection.blockTimestamp = event.block.timestamp
+  // // collection.transactionHash = event.transaction.hash
 
-  collection.save()
+  // collection.save()
 }

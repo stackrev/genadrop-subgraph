@@ -96,7 +96,7 @@ dataSources:
     name: SingleNftMinter
     network: fuji
     source:
-      address: "0xA0475AE9c24443f4f9FDC7c3e32cCD2A6EFF8E1a"
+      address: "0xa7bB4C31Aaf38126515236FFf1a726301e241D8d"
       abi: SingleNftMinter
       startBlock: 24529513
     mapping:

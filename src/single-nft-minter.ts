@@ -1,3 +1,4 @@
+import { Bytes, log } from "@graphprotocol/graph-ts";
 import {
   AdminChanged as AdminChangedEvent,
   ApprovalForAll as ApprovalForAllEvent,
@@ -11,8 +12,10 @@ import {
   Upgraded as UpgradedEvent
 } from "../generated/SingleNftMinter/SingleNftMinter"
 import {
-  Collection
+  Collection, NFT, User
 } from "../generated/schema"
+
+const contractAddress = "0xa7bB4C31Aaf38126515236FFf1a726301e241D8d"
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(
@@ -88,6 +91,39 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
+  let nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+
+  nft.tokenId = event.params.id
+  
+  let owner = User.load(event.params.to);
+  if (!owner) {
+    owner = new User(event.params.to);
+    owner.address = event.params.to;
+  }
+  nft.owner = owner.id
+  
+  let userOwnedNfts = owner.ownedNFTs
+  if(!userOwnedNfts) userOwnedNfts = []
+  userOwnedNfts.push(nft.id)
+  owner.ownedNFTs = userOwnedNfts
+
+  let collection = Collection.load(Bytes.fromHexString(contractAddress))
+  if(collection == null){
+    collection = new Collection(Bytes.fromHexString(contractAddress))
+    collection.address = Bytes.fromHexString(contractAddress);
+  }
+  nft.collection = collection.id
+
+  let collectionNfts = collection.nfts
+  if(!collectionNfts) collectionNfts = []
+  collectionNfts.push(nft.id)
+  collection.nfts = collectionNfts
+
+  owner.save()
+  collection.save()
+  nft.save()
+  
+
   // let entity = new TransferSingle(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -105,6 +141,14 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 }
 
 export function handleURI(event: URIEvent): void {
+  let nft = NFT.load(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+  if(!nft)
+    return;
+
+  nft.tokenId = event.params.id
+  nft.tokenIPFSPath = event.params.value
+
+  nft.save()
   // let entity = new URI(event.transaction.hash.concatI32(event.logIndex.toI32()))
   // entity.value = event.params.value
   // entity.SingleNftMinter_id = event.params.id
@@ -137,9 +181,18 @@ export function handleCollectionInit(event: CollectionInitEvent): void {
   let collection = new Collection(event.params.collectionAddress)
 
   collection.address = event.params.collectionAddress
-  collection.creator = event.params.collectionOwner
+
+  let creator = User.load(event.params.collectionOwner)
+  if(creator == null){
+    creator = new User(event.params.collectionOwner)
+    creator.address = event.params.collectionOwner
+  }
+
+  collection.creator = creator.id
   collection.name = event.params.collectionName
   collection.description = ""
+
+  creator.save()
   collection.save()
 
   // let entity = new CollectionInit(
