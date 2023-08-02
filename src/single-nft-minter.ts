@@ -9,13 +9,11 @@ import {
   TransferBatch1 as TransferBatch1Event,
   TransferSingle as TransferSingleEvent,
   URI as URIEvent,
-  Upgraded as UpgradedEvent
-} from "../generated/SingleNftMinter/SingleNftMinter"
-import {
-  Collection, NFT, User
-} from "../generated/schema"
+  Upgraded as UpgradedEvent,
+} from "../generated/SingleNftMinter/SingleNftMinter";
+import { Collection, NFT, User } from "../generated/schema";
 
-const contractAddress = "0x306EEf2d867BAEB40e451F1A00d64665AF922D4C"
+const contractAddress = "0x41109163d8cf45E9dDd32801A8deb54b9513b1FA";
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(
@@ -23,11 +21,9 @@ export function handleAdminChanged(event: AdminChangedEvent): void {
   // )
   // entity.previousAdmin = event.params.previousAdmin
   // entity.newAdmin = event.params.newAdmin
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
 
@@ -38,11 +34,9 @@ export function handleApprovalForAll(event: ApprovalForAllEvent): void {
   // entity.account = event.params.account
   // entity.operator = event.params.operator
   // entity.approved = event.params.approved
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
 
@@ -51,11 +45,9 @@ export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
   // entity.beacon = event.params.beacon
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
 
@@ -64,14 +56,11 @@ export function handleInitialized(event: InitializedEvent): void {
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
   // entity.version = event.params.version
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
-
 
 export function handleTransferBatch1(event: TransferBatch1Event): void {
   // let entity = new TransferBatch1(
@@ -82,54 +71,59 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
   // entity.to = event.params.to
   // entity.ids = event.params.ids
   // entity.values = event.params.values
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
-  let nft = NFT.load(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
-  if(!nft)
-    nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+  let nft = NFT.load(
+    Bytes.fromHexString(
+      contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
+    )
+  );
+  if (!nft)
+    nft = new NFT(
+      Bytes.fromHexString(
+        contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
+      )
+    );
 
-  nft.tokenID = event.params.id
-  nft.createdAtTimestamp = event.block.timestamp
-  nft.chain = 43113
-  nft.isSoulBound = false
-  nft.isListed = false
-  nft.isSold = true
+  nft.tokenID = event.params.id;
+  nft.createdAtTimestamp = event.block.timestamp;
+  nft.chain = 43113;
+  nft.isSoulBound = false;
+  nft.isListed = false;
+  nft.isSold = false;
 
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
     owner.address = event.params.to;
   }
-  nft.owner = owner.id
-  
-  let userNfts = owner.nfts
-  if(!userNfts) userNfts = []
-  userNfts.push(nft.id)
-  owner.nfts = userNfts
+  nft.owner = owner.id;
 
-  let collection = Collection.load(Bytes.fromHexString(contractAddress))
-  if(collection == null){
-    collection = new Collection(Bytes.fromHexString(contractAddress))
+  let userNfts = owner.nfts;
+  if (!userNfts) userNfts = [];
+  userNfts.push(nft.id);
+  owner.nfts = userNfts;
+
+  let collection = Collection.load(Bytes.fromHexString(contractAddress));
+  if (collection == null) {
+    collection = new Collection(Bytes.fromHexString(contractAddress));
     collection.address = Bytes.fromHexString(contractAddress);
   }
-  nft.collection = collection.id
+  nft.collection = collection.id;
 
-  let collectionNfts = collection.nfts
-  if(!collectionNfts) collectionNfts = []
-  collectionNfts.push(nft.id)
-  collection.nfts = collectionNfts
+  let collectionNfts = collection.nfts;
+  if (!collectionNfts) collectionNfts = [];
+  collectionNfts.push(nft.id);
+  collection.nfts = collectionNfts;
 
-  owner.save()
-  collection.save()
-  nft.save()
-  
+  owner.save();
+  collection.save();
+  nft.save();
 
   // let entity = new TransferSingle(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -148,14 +142,22 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 }
 
 export function handleURI(event: URIEvent): void {
-  let nft = NFT.load(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
-  if(!nft)
-    nft = new NFT(Bytes.fromHexString(contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())))
+  let nft = NFT.load(
+    Bytes.fromHexString(
+      contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
+    )
+  );
+  if (!nft)
+    nft = new NFT(
+      Bytes.fromHexString(
+        contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
+      )
+    );
 
-  nft.tokenID = event.params.id
-  nft.tokenIPFSPath = event.params.value
+  nft.tokenID = event.params.id;
+  nft.tokenIPFSPath = event.params.value;
 
-  nft.save()
+  nft.save();
   // let entity = new URI(event.transaction.hash.concatI32(event.logIndex.toI32()))
   // entity.value = event.params.value
   // entity.SingleNftMinter_id = event.params.id
@@ -172,35 +174,31 @@ export function handleUpgraded(event: UpgradedEvent): void {
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
   // entity.implementation = event.params.implementation
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
 
-
 // ===========================================================================================================
 
-
 export function handleCollectionInit(event: CollectionInitEvent): void {
-  let collection = new Collection(event.params.collectionAddress)
+  let collection = new Collection(event.params.collectionAddress);
 
-  collection.address = event.params.collectionAddress
+  collection.address = event.params.collectionAddress;
 
-  let creator = User.load(event.params.collectionOwner)
-  if(creator == null){
-    creator = new User(event.params.collectionOwner)
-    creator.address = event.params.collectionOwner
+  let creator = User.load(event.params.collectionOwner);
+  if (creator == null) {
+    creator = new User(event.params.collectionOwner);
+    creator.address = event.params.collectionOwner;
   }
 
-  collection.creator = creator.id
-  collection.name = event.params.collectionName
-  collection.description = ""
+  collection.creator = creator.id;
+  collection.name = event.params.collectionName;
+  collection.description = "";
 
-  creator.save()
-  collection.save()
+  creator.save();
+  collection.save();
 
   // let entity = new CollectionInit(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -212,7 +210,6 @@ export function handleCollectionInit(event: CollectionInitEvent): void {
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
 }
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
@@ -223,10 +220,8 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
   // entity.from = event.params.from
   // entity.to = event.params.to
   // entity.ids = event.params.ids
-
   // entity.blockNumber = event.block.number
   // entity.blockTimestamp = event.block.timestamp
   // entity.transactionHash = event.transaction.hash
-
   // entity.save()
 }
