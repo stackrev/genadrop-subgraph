@@ -10,7 +10,7 @@ type NFT @entity {
   owner: User
   collection: Collection
   category: String
-  chain: BigInt
+  chain: Int
   transactions: Bytes
 }
 

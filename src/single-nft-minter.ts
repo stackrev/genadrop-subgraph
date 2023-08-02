@@ -1,4 +1,4 @@
-import { Bytes, BigInt } from "@graphprotocol/graph-ts";
+import { Bytes } from "@graphprotocol/graph-ts";
 import {
   AdminChanged as AdminChangedEvent,
   ApprovalForAll as ApprovalForAllEvent,
@@ -15,7 +15,7 @@ import {
   Collection, NFT, User
 } from "../generated/schema"
 
-const contractAddress = "0xa7bB4C31Aaf38126515236FFf1a726301e241D8d"
+const contractAddress = "0x306EEf2d867BAEB40e451F1A00d64665AF922D4C"
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(
@@ -97,6 +97,10 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 
   nft.tokenID = event.params.id
   nft.createdAtTimestamp = event.block.timestamp
+  nft.chain = 43113
+  nft.isSoulBound = false
+  nft.isListed = false
+  nft.isSold = true
 
   let owner = User.load(event.params.to);
   if (!owner) {
@@ -150,7 +154,6 @@ export function handleURI(event: URIEvent): void {
 
   nft.tokenID = event.params.id
   nft.tokenIPFSPath = event.params.value
-  nft.chain = BigInt.fromU32(43113)
 
   nft.save()
   // let entity = new URI(event.transaction.hash.concatI32(event.logIndex.toI32()))
