@@ -1,11 +1,11 @@
 {
   "fuji": {
     "NftMinter": {
-      "address": "0x79149776fD7857E9a94Aac7a33A0a5b55Cd1c027",
+      "address": "0xc37Da46d0ddF8F94428a273BCE25037bC54a885f",
       "startBlock": 24529539
     },
     "NftCollection": {
-      "address": "0x5beA0e1532b7d129EbAd33E831f847dB7Af1fDb7",
+      "address": "0xf73034a9f339FA6bad1e35CaC037605d767EdC0a",
       "startBlock": 24529544
     },
     "SoulBound": {

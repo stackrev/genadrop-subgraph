@@ -6,6 +6,7 @@ import {
   Upgraded as UpgradedEvent,
 } from "../generated/NftCollection/NftCollection";
 import { Collection } from "../generated/schema";
+import { NftMinter as NftMinterTemplate } from "../generated/templates";
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(  // let entity = new AdminChanged(
@@ -72,6 +73,8 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   collection.nfts = [];
 
   collection.save();
+
+  NftMinterTemplate.create(event.params.collectionAddress);
 
   // // collection.blockNumber = event.block.number
   // // collection.blockTimestamp = event.block.timestamp

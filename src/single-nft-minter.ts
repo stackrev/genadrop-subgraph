@@ -13,8 +13,6 @@ import {
 } from "../generated/SingleNftMinter/SingleNftMinter";
 import { Collection, NFT, User } from "../generated/schema";
 
-const contractAddress = "0x41109163d8cf45E9dDd32801A8deb54b9513b1FA";
-
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -78,17 +76,13 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
-  let nft = NFT.load(
-    Bytes.fromHexString(
-      contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
-    )
+  const nftId = Bytes.fromHexString(
+    event.address
+      .toHexString()
+      .concat(Bytes.fromBigInt(event.params.id).toHexString())
   );
-  if (!nft)
-    nft = new NFT(
-      Bytes.fromHexString(
-        contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
-      )
-    );
+  let nft = NFT.load(nftId);
+  if (!nft) nft = new NFT(nftId);
 
   nft.tokenID = event.params.id;
   nft.createdAtTimestamp = event.block.timestamp;
@@ -109,10 +103,10 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   userNfts.push(nft.id);
   owner.nfts = userNfts;
 
-  let collection = Collection.load(Bytes.fromHexString(contractAddress));
+  let collection = Collection.load(event.address);
   if (collection == null) {
-    collection = new Collection(Bytes.fromHexString(contractAddress));
-    collection.address = Bytes.fromHexString(contractAddress);
+    collection = new Collection(event.address);
+    collection.address = event.address;
   }
   nft.collection = collection.id;
 
@@ -142,17 +136,14 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 }
 
 export function handleURI(event: URIEvent): void {
-  let nft = NFT.load(
-    Bytes.fromHexString(
-      contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
-    )
+  const nftId = Bytes.fromHexString(
+    event.address
+      .toHexString()
+      .concat(Bytes.fromBigInt(event.params.id).toHexString())
   );
-  if (!nft)
-    nft = new NFT(
-      Bytes.fromHexString(
-        contractAddress.concat(Bytes.fromBigInt(event.params.id).toHexString())
-      )
-    );
+
+  let nft = NFT.load(nftId);
+  if (!nft) nft = new NFT(nftId);
 
   nft.tokenID = event.params.id;
   nft.tokenIPFSPath = event.params.value;
