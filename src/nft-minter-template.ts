@@ -50,6 +50,48 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
+  const nftId = Bytes.fromHexString(
+    event.address
+      .toHexString()
+      .concat(Bytes.fromBigInt(event.params.id).toHexString())
+  );
+  let nft = NFT.load(nftId);
+  if (!nft) nft = new NFT(nftId);
+
+  nft.tokenID = event.params.id;
+  nft.createdAtTimestamp = event.block.timestamp;
+  nft.chain = 43113;
+  nft.isSoulBound = false;
+  nft.isListed = false;
+  nft.isSold = false;
+
+  let owner = User.load(event.params.to);
+  if (!owner) {
+    owner = new User(event.params.to);
+    owner.address = event.params.to;
+  }
+  nft.owner = owner.id;
+
+  let userNfts = owner.nfts;
+  if (!userNfts) userNfts = [];
+  userNfts.push(nft.id);
+  owner.nfts = userNfts;
+
+  let collection = Collection.load(event.address);
+  if (collection == null) {
+    collection = new Collection(event.address);
+    collection.address = event.address;
+  }
+  nft.collection = collection.id;
+
+  let collectionNfts = collection.nfts;
+  if (!collectionNfts) collectionNfts = [];
+  collectionNfts.push(nft.id);
+  collection.nfts = collectionNfts;
+
+  owner.save();
+  collection.save();
+  nft.save();
   // let entity = new TransferSingle(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )

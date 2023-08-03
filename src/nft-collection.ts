@@ -5,7 +5,7 @@ import {
   Initialized as InitializedEvent,
   Upgraded as UpgradedEvent,
 } from "../generated/NftCollection/NftCollection";
-import { Collection } from "../generated/schema";
+import { Collection, User } from "../generated/schema";
 import { NftMinter as NftMinterTemplate } from "../generated/templates";
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
@@ -67,12 +67,21 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   let collection = new Collection(event.params.collectionAddress);
 
   collection.address = event.params.collectionAddress;
-  collection.creator = event.params.collectionOwner;
+
+  let creator = User.load(event.params.collectionOwner);
+  if (!creator) creator = new User(event.params.collectionOwner);
+  let creatorCollections = creator.collections;
+  if (!creatorCollections) creatorCollections = [];
+  creatorCollections.push(collection.id);
+  creator.collections = creatorCollections;
+
+  collection.creator = creator.id;
   collection.name = event.params.collectionName;
   collection.description = event.params.collectiondescription;
   collection.nfts = [];
 
   collection.save();
+  creator.save();
 
   NftMinterTemplate.create(event.params.collectionAddress);
 
