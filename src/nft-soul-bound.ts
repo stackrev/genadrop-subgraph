@@ -3,7 +3,7 @@ import {
   Approval as ApprovalEvent,
   ApprovalForAll as ApprovalForAllEvent,
   Transfer as TransferEvent,
-} from "../generated/SoulBound/SoulBound";
+} from "../generated/NftSoulBound/NftSoulBound";
 import { Collection, User, NFT } from "../generated/schema";
 
 export function handleApproval(event: ApprovalEvent): void {

@@ -1,28 +1,20 @@
 {
   "fuji": {
-    "NftMinter": {
-      "address": "0xc37Da46d0ddF8F94428a273BCE25037bC54a885f",
-      "startBlock": 24529539
-    },
-    "NftCollection": {
-      "address": "0xf73034a9f339FA6bad1e35CaC037605d767EdC0a",
-      "startBlock": 24529544
-    },
-    "SoulBound": {
-      "address": "0x0a06A3d6F23F1B3DC342c146DA0170D544c51532",
+    "NftSoulBound": {
+      "address": "0x2998eCA937fad504a7Df30C8e1Ca403e4f16B036",
       "startBlock": 24677169
     },
-    "SingleNftMinter": {
-      "address": "0x41109163d8cf45E9dDd32801A8deb54b9513b1FA",
+    "NftSingle": {
+      "address": "0x862086adC9937E36e5a7989874D0A6BA0a153f8e",
       "startBlock": 24677157
     },
     "NftMarket": {
-      "address": "0x53b922f0cA7B015bd71CaaCEd298b3a0E1710D08",
+      "address": "0x078977d9Eb481Ed4de932c98bAC458f5c3c3705C",
       "startBlock": 24678533
     },
-    "NftMarketV2": {
-      "address": "0x420e727c31eD5D861fD27407DE6Be953d9Ca5bCE",
-      "startBlock": 24677192
+    "NftFactory": {
+      "address": "0x0e0878fbC369eEDb938885428c52465366206676",
+      "startBlock": 24529544
     }
   }
 }

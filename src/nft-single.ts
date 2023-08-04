@@ -10,7 +10,7 @@ import {
   TransferSingle as TransferSingleEvent,
   URI as URIEvent,
   Upgraded as UpgradedEvent,
-} from "../generated/SingleNftMinter/SingleNftMinter";
+} from "../generated/NftSingle/NftSingle";
 import { Collection, NFT, User } from "../generated/schema";
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
