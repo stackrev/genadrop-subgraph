@@ -9,6 +9,7 @@ import {
   URI as URIEvent,
 } from "../generated/templates/NftCollection/NftCollection";
 import { NFT, Collection, User } from "../generated/schema";
+import { log } from "@graphprotocol/graph-ts";
 
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {
   // let entity = new ApprovalForAll(
@@ -35,6 +36,47 @@ export function handleInitialized(event: InitializedEvent): void {
 }
 
 export function handleTransferBatch1(event: TransferBatch1Event): void {
+  let collection = Collection.load(event.address);
+  if (!collection) {
+    collection = new Collection(event.address);
+  }
+  collection.address = event.address;
+
+  let collectionNfts = collection.nfts;
+  if (!collectionNfts) collectionNfts = [];
+
+  let owner = User.load(event.params.to);
+  if (!owner) {
+    owner = new User(event.params.to);
+    owner.address = event.params.to;
+  }
+  let userNfts = owner.nfts;
+  if (!userNfts) userNfts = [];
+
+  for (let i = 0; i < event.params.ids.length; i++) {
+    const tokenId = event.params.ids[i];
+    const nftId = Bytes.fromHexString(
+      event.address
+        .toHexString()
+        .concat(Bytes.fromBigInt(event.params.ids[i]).toHexString())
+    );
+    let nft = NFT.load(nftId);
+    if (!nft) nft = new NFT(nftId);
+    collectionNfts.push(nft.id);
+
+    nft.tokenID = event.params.ids[i];
+    nft.chain = 43113;
+    nft.owner = owner.id;
+    nft.collection = collection.id;
+
+    userNfts.push(nft.id);
+    nft.createdAtTimestamp = event.block.timestamp;
+    nft.save();
+  }
+  collection.nfts = collectionNfts;
+  collection.save();
+  owner.nfts = userNfts;
+  owner.save();
   // let entity = new TransferBatch1(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
@@ -130,6 +172,7 @@ export function handleURI(event: URIEvent): void {
 //===============================================================
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
+  log.warning(event.address.toHexString(), []);
   let collection = Collection.load(event.address);
   if (!collection) {
     collection = new Collection(event.address);

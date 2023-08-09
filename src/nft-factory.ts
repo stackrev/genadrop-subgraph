@@ -7,6 +7,8 @@ import {
 } from "../generated/NftFactory/NftFactory";
 import { Collection, User } from "../generated/schema";
 import { NftCollection as NftCollectionTemplate } from "../generated/templates";
+import { NftCollection } from "../generated/templates/NftCollection/NftCollection";
+import { DataSourceContext, log } from "@graphprotocol/graph-ts";
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   // let entity = new AdminChanged(  // let entity = new AdminChanged(
@@ -64,6 +66,10 @@ export function handleUpgraded(event: UpgradedEvent): void {
 // =================================================================
 
 export function handleCollectionCreated(event: CollectionCreatedEvent): void {
+  log.warning(event.params.collectionAddress.toHexString(), [
+    event.params.collectionName,
+    event.params.collectiondescription,
+  ]);
   let collection = new Collection(event.params.collectionAddress);
 
   collection.address = event.params.collectionAddress;
@@ -82,8 +88,9 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
 
   collection.save();
   creator.save();
-
   NftCollectionTemplate.create(event.params.collectionAddress);
+
+  const collectionContract = NftCollection.bind(event.params.collectionAddress);
 
   // // collection.blockNumber = event.block.number
   // // collection.blockTimestamp = event.block.timestamp
