@@ -94,7 +94,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
-    owner.address = event.params.to;
   }
   nft.owner = owner.id;
 
@@ -106,7 +105,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   let collection = Collection.load(event.address);
   if (collection == null) {
     collection = new Collection(event.address);
-    collection.address = event.address;
   }
   nft.collection = collection.id;
 
@@ -176,12 +174,9 @@ export function handleUpgraded(event: UpgradedEvent): void {
 export function handleCollectionInit(event: CollectionInitEvent): void {
   let collection = new Collection(event.params.collectionAddress);
 
-  collection.address = event.params.collectionAddress;
-
   let creator = User.load(event.params.collectionOwner);
   if (creator == null) {
     creator = new User(event.params.collectionOwner);
-    creator.address = event.params.collectionOwner;
   }
 
   collection.creator = creator.id;

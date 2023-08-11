@@ -16,7 +16,6 @@ type NFT @entity {
 
 type Collection @entity {
   id: Bytes!
-  address: Bytes! # address
   creator: User
   name: String # string
   description: String # string
@@ -25,7 +24,6 @@ type Collection @entity {
 
 type User @entity {
   id: Bytes!
-  address: Bytes!
   nfts: [NFT!]
   collections: [Collection!]
 }

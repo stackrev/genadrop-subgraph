@@ -51,7 +51,6 @@ export function handleTransfer(event: TransferEvent): void {
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
-    owner.address = event.params.to;
   }
   nft.owner = owner.id;
 
@@ -63,7 +62,6 @@ export function handleTransfer(event: TransferEvent): void {
   let collection = Collection.load(event.address);
   if (collection == null) {
     collection = new Collection(event.address);
-    collection.address = event.address;
   }
   nft.collection = collection.id;
 

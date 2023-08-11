@@ -72,8 +72,6 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   ]);
   let collection = new Collection(event.params.collectionAddress);
 
-  collection.address = event.params.collectionAddress;
-
   let creator = User.load(event.params.collectionOwner);
   if (!creator) creator = new User(event.params.collectionOwner);
   let creatorCollections = creator.collections;
@@ -90,7 +88,7 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   creator.save();
   NftCollectionTemplate.create(event.params.collectionAddress);
 
-  const collectionContract = NftCollection.bind(event.params.collectionAddress);
+  // const collectionContract = NftCollection.bind(event.params.collectionAddress);
 
   // // collection.blockNumber = event.block.number
   // // collection.blockTimestamp = event.block.timestamp

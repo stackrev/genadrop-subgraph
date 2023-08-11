@@ -40,7 +40,6 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
   if (!collection) {
     collection = new Collection(event.address);
   }
-  collection.address = event.address;
 
   let collectionNfts = collection.nfts;
   if (!collectionNfts) collectionNfts = [];
@@ -48,7 +47,6 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
-    owner.address = event.params.to;
   }
   let userNfts = owner.nfts;
   if (!userNfts) userNfts = [];
@@ -110,7 +108,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
-    owner.address = event.params.to;
   }
   nft.owner = owner.id;
 
@@ -122,7 +119,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   let collection = Collection.load(event.address);
   if (collection == null) {
     collection = new Collection(event.address);
-    collection.address = event.address;
   }
   nft.collection = collection.id;
 
@@ -177,7 +173,6 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
   if (!collection) {
     collection = new Collection(event.address);
   }
-  collection.address = event.address;
 
   let collectionNfts = collection.nfts;
   if (!collectionNfts) collectionNfts = [];
@@ -185,7 +180,6 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
   let owner = User.load(event.params.to);
   if (!owner) {
     owner = new User(event.params.to);
-    owner.address = event.params.to;
   }
   let userNfts = owner.nfts;
   if (!userNfts) userNfts = [];
