@@ -50,25 +50,6 @@ export function handleUpgraded(event: UpgradedEvent): void {
 export function handleBulkMarketItemCreated(
   event: BulkMarketItemCreatedEvent
 ): void {
-  // for(let i = 0 ; i < event.params.tokenId.length ; i ++){
-  //   const oneTokenId = event.params.tokenId[i]
-  //   let collection = Collection.load(event.params.nftContract)
-  //   if(!collection){
-  //     collection = new Collection(event.params.nftContract)
-  //     collection.save()
-  //   }
-  //   let nft = new NFT(event.params.nftContract.concatI32(oneTokenId.toI32()))
-  //   nft.collection = collection.id
-  //   // nft.seller = event.params.seller
-  //   nft.category = event.params.category
-  //   nft.price = event.params.price
-  //   nft.tokenId = oneTokenId
-  //   nft.owner = event.params.owner
-  //   nft.chain = event.params.chain
-  //   // nft.description = event.params.description
-  //   nft.createdAtTimeStamp = event.block.timestamp
-  //   nft.save();
-  // }
   // let entity = new BulkMarketItemCreated(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
   // )
