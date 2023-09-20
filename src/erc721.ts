@@ -3,11 +3,11 @@ import { ERC721, Transfer as TransferEvent } from "../generated/ERC721/ERC721";
 import { NFT, Collection, User } from "../generated/schema";
 
 export function handleTransfer(event: TransferEvent): void {
-  log.debug("Transfer detected. From: {} | To: {} | TokenID: {}", [
-    event.params.from.toHexString(),
-    event.params.to.toHexString(),
-    event.params.tokenId.toHexString(),
-  ]);
+  // log.debug("Transfer detected. From: {} | To: {} | TokenID: {}", [
+  //   event.params.from.toHexString(),
+  //   event.params.to.toHexString(),
+  //   event.params.tokenId.toHexString(),
+  // ]);
 
   let instance = ERC721.bind(event.address);
 
