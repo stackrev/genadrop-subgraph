@@ -11,30 +11,6 @@ import {
 import { NFT, Collection, User } from "../generated/schema";
 import { log } from "@graphprotocol/graph-ts";
 
-export function handleApprovalForAll(event: ApprovalForAllEvent): void {
-  // let entity = new ApprovalForAll(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // )
-  // entity.account = event.params.account
-  // entity.operator = event.params.operator
-  // entity.approved = event.params.approved
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
-}
-
-export function handleInitialized(event: InitializedEvent): void {
-  // let entity = new Initialized(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // )
-  // entity.version = event.params.version
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
-}
-
 export function handleTransferBatch1(event: TransferBatch1Event): void {
   let collection = Collection.load(event.address);
   if (!collection) {
@@ -75,18 +51,6 @@ export function handleTransferBatch1(event: TransferBatch1Event): void {
   collection.save();
   owner.nfts = userNfts;
   owner.save();
-  // let entity = new TransferBatch1(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // )
-  // entity.operator = event.params.operator
-  // entity.from = event.params.from
-  // entity.to = event.params.to
-  // entity.ids = event.params.ids
-  // entity.values = event.params.values
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
@@ -130,18 +94,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   owner.save();
   collection.save();
   nft.save();
-  // let entity = new TransferSingle(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // )
-  // entity.operator = event.params.operator
-  // entity.from = event.params.from
-  // entity.to = event.params.to
-  // entity.NftMinter_id = event.params.id
-  // entity.value = event.params.value
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
 }
 
 export function handleURI(event: URIEvent): void {
@@ -155,14 +107,6 @@ export function handleURI(event: URIEvent): void {
   nft.tokenID = event.params.id;
   nft.tokenIPFSPath = event.params.value;
   nft.save();
-
-  // let entity = new URI(event.transaction.hash.concatI32(event.logIndex.toI32()))
-  // entity.value = event.params.value
-  // entity.NftMinter_id = event.params.id
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
 }
 
 //===============================================================
@@ -208,15 +152,4 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
   collection.save();
   owner.nfts = userNfts;
   owner.save();
-  // let entity = new TransferBatch(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // )
-  // entity.operator = event.params.operator
-  // entity.from = event.params.from
-  // entity.to = event.params.to
-  // entity.ids = event.params.ids
-  // entity.blockNumber = event.block.number
-  // entity.blockTimestamp = event.block.timestamp
-  // entity.transactionHash = event.transaction.hash
-  // entity.save()
 }
